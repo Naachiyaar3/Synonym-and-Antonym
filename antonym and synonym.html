@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synonym & Antonym Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .game-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 10px;
+            width: 80%;
+            font-size: 16px;
+            margin-bottom: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .feedback {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .mode-switch {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <h1>Synonym & Antonym Game</h1>    
+
+    <div class="mode-switch">
+        <button onclick="switchMode('synonym')">Synonym Mode</button>
+        <button onclick="switchMode('antonym')">Antonym Mode</button>
+    </div>
+
+    <p>What is the <span id="modeType">synonym</span>  of <span id="wordDisplay">happy</span>?</p>
+    <input type="text" id="userInput" placeholder="Enter synonym or antonym">
+    <button onclick="checkAnswer()">Submit</button>
+    <div class="feedback" id="feedback"></div>
+</div>
+
+<script>
+    const synonyms = {
+        "happy": "glad",
+        "big": "large",
+        "fast": "quick",
+        "strong": "powerful",
+        "beautiful": "pretty",
+        "easy": "simple",
+        "smart": "intelligent",
+        "brave": "courage"
+    };
+
+    const antonyms = {
+        "happy": "sad",
+        "big": "small",
+        "fast": "slow",
+        "strong": "weak",
+        "beautiful": "ugly",
+        "easy": "hard",
+        "smart": "dumb",
+        "brave": "cowardly",
+        "tall":"short",
+        "good":"bad"
+    };
+
+    let currentWord = "happy";  
+    let currentMode = "synonym";  
+    
+    function switchMode(mode) {
+        currentMode = mode;
+        document.getElementById("modeType").textContent = mode === 'synonym' ? 'synonym' : 'antonym';
+        document.getElementById("antonymMode").textContent = mode === 'antonym' ? 'synonym' : 'antonym';
+        pickNewWord(); 
+    }
+
+    
+    function checkAnswer() {
+        const userAnswer = document.getElementById("userInput").value.toLowerCase().trim();
+        let correctAnswer;
+
+        if (currentMode === 'synonym') {
+            correctAnswer = synonyms[currentWord];
+        } else {
+            correctAnswer = antonyms[currentWord];
+        }
+
+        const feedback = document.getElementById("feedback");
+
+        if (userAnswer === correctAnswer) {
+            feedback.textContent = "Correct! Well done.";
+            feedback.style.color = "green";
+        } else {
+            feedback.textContent = `Oops! The correct ${currentMode} is "${correctAnswer}".`;
+            feedback.style.color = "red";
+        }
+
+             
+        pickNewWord();
+    }
+
+  
+    function pickNewWord() {
+        const wordList = currentMode === 'synonym' ? Object.keys(synonyms) : Object.keys(antonyms);
+        const randomIndex = Math.floor(Math.random() * wordList.length);
+        currentWord = wordList[randomIndex];
+        document.getElementById("wordDisplay").textContent = currentWord;
+        document.getElementById("userInput").value = '';  
+    }
+
+   
+    window.onload = pickNewWord;
+</script>
+
+</body>
+</html>
